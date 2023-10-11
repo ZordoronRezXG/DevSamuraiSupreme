@@ -45,7 +45,6 @@ SDL_Window* window;
 
 const int playerSpeed = 2;  // Adjust the value as needed
 
-
 // Function to load assets
 bool loadAssets() {
     SDL_Surface* playerSurface = SDL_LoadBMP("assets/player.bmp");
@@ -226,7 +225,7 @@ void TickGameLoop() {
 
 
 // Initialize the game
-void init() {
+bool init() {
     lm.log(1, "init keybinds...");
     InitKeybindings();
 
@@ -234,7 +233,7 @@ void init() {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         cerr << "SDL initialization failed. SDL Error: " << SDL_GetError() << std::endl;
         isGameRunning = false;
-        return;
+        return false;
     }
 
     lm.log(1, "SDL_CreateWindow...");
@@ -242,7 +241,7 @@ void init() {
     if (!window) {
         cerr << "Failed to create window. SDL Error: " << SDL_GetError() << std::endl;
         isGameRunning = false;
-        return;
+        return false;
     }
 
     lm.log(1, "SDL_CreateRendererr...");
@@ -250,23 +249,27 @@ void init() {
     if (!renderer) {
         cerr << "Failed to create renderer. SDL Error: " << SDL_GetError() << std::endl;
         isGameRunning = false;
-        return;
+        return false;
     }
 
     lm.log(1, "Loading assets...");
     if (!loadAssets()) {
         isGameRunning = false;
-        return;
+        return false;
     }
 
     playerRect = { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 32, 32 }; // Assuming a fixed size for the player
     lm.log(0, "Finished Loading! - Ready to play!");
+    return true;
 }
 
 int main(int argc, char* argv[]) {
     lm.log(1, "Initializing dependencies...");
-    init();
-
+    if (!init()) {
+        cout << "SDL is probably missing";
+        cleanUp();
+        return 0;
+    }
     if (isGameRunning) {
         TickGameLoop();
     }
