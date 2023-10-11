@@ -40,7 +40,7 @@ SDL_Renderer* renderer;
 SDL_Texture* playerTexture;
 SDL_Window* window;
 
-bool isRunning = true;
+bool isGameRunning = true;
 
 // Function to load assets
 bool loadAssets() {
@@ -56,47 +56,14 @@ bool loadAssets() {
     return true;
 }
 
-// Initialize the game
-void init() {
-    lm.zlog(1,"SDL_INIT_EVERYTHING...");
-    if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
-        cerr << "SDL initialization failed. SDL Error: " << SDL_GetError() << std::endl;
-        isRunning = false;
-        return;
-    }
 
-    lm.zlog(1,"SDL_CreateWindow...");
-    window = SDL_CreateWindow("Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-    if (!window) {
-        cerr << "Failed to create window. SDL Error: " << SDL_GetError() << std::endl;
-        isRunning = false;
-        return;
-    }
-
-    lm.zlog(1,"SDL_CreateRendererr...");
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if (!renderer) {
-        cerr << "Failed to create renderer. SDL Error: " << SDL_GetError() << std::endl;
-        isRunning = false;
-        return;
-    }
-
-    lm.zlog(1,"Loading assets...");
-    if (!loadAssets()) {
-        isRunning = false;
-        return;
-    }
-
-    playerRect = { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 32, 32 }; // Assuming a fixed size for the player
-    lm.zlog(1, "Finished Loading!");
-}
 // Handle game events
 void handleEvents() {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
         case SDL_QUIT:
-            isRunning = false;
+            isGameRunning = false;
             break;
         }
     }
@@ -144,7 +111,7 @@ void TickGameLoop() {
 
     Uint32 frameStart, frameTime;
 
-    while (isRunning) {
+    while (isGameRunning) {
         frameStart = SDL_GetTicks();
 
         handleEvents();
@@ -161,12 +128,46 @@ void TickGameLoop() {
     cleanUp();
 }
 
+// Initialize the game
+void init() {
+    lm.zlog(1, "SDL_INIT_EVERYTHING...");
+    if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
+        cerr << "SDL initialization failed. SDL Error: " << SDL_GetError() << std::endl;
+        isGameRunning = false;
+        return;
+    }
+
+    lm.zlog(1, "SDL_CreateWindow...");
+    window = SDL_CreateWindow("Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    if (!window) {
+        cerr << "Failed to create window. SDL Error: " << SDL_GetError() << std::endl;
+        isGameRunning = false;
+        return;
+    }
+
+    lm.zlog(1, "SDL_CreateRendererr...");
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    if (!renderer) {
+        cerr << "Failed to create renderer. SDL Error: " << SDL_GetError() << std::endl;
+        isGameRunning = false;
+        return;
+    }
+
+    lm.zlog(1, "Loading assets...");
+    if (!loadAssets()) {
+        isGameRunning = false;
+        return;
+    }
+
+    playerRect = { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 32, 32 }; // Assuming a fixed size for the player
+    lm.zlog(1, "Finished Loading! - Ready to play!");
+}
 
 int main(int argc, char* argv[]) {
     lm.zlog(1, "Initializing dependencies...");
     init();
 
-    if (isRunning) {
+    if (isGameRunning) {
         TickGameLoop();
     }
 

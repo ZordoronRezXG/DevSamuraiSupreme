@@ -28,12 +28,11 @@
 
 #include "LogMaker.h"
 #include "Coutzr.h"
-
+Coutzr ncout;
 LogMaker::LogMaker() {
 }
 
 void LogMaker::zlog(int flag, const std::string str) {
-    Coutzr ncout;
     ncout << flag << str;
-    std::cout << std::flush;
+    ncout.buffer.sync();
 }
