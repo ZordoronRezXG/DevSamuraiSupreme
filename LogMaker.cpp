@@ -28,6 +28,8 @@
 
 #include "LogMaker.h"
 #include "Coutzr.h"
+#include <fstream>
+
 Coutzr ncout;
 LogMaker::LogMaker() {
 }
@@ -35,4 +37,11 @@ LogMaker::LogMaker() {
 void LogMaker::log(int flag, const std::string str) {
     ncout << flag << str;
     ncout.buffer.sync(flag, false);
+    savelog(str);
+}
+
+void LogMaker::savelog(const std::string& logString) {
+    std::ofstream logFile("logs.txt");
+    logFile << logString;
+    logFile.close();
 }

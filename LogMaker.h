@@ -36,4 +36,6 @@ public:
     LogMaker();
 
     void log(int flag, const std::string str);
+    void savelog(const std::string& logString);
 };
+

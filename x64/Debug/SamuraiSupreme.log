@@ -1,28 +1,4 @@
-﻿  Coutzr.cpp
-  CustomCoutBuffer.cpp
+﻿  LogMaker.cpp
   Main.cpp
   コードを生成中...
-Main.obj : error LNK2019: 未解決の外部シンボル SDL_GetError が関数 "void __cdecl init(void)" (?init@@YAXXZ) で参照されました
-Main.obj : error LNK2019: 未解決の外部シンボル SDL_RWFromFile が関数 "bool __cdecl loadAssets(void)" (?loadAssets@@YA_NXZ) で参照されました
-Main.obj : error LNK2019: 未解決の外部シンボル SDL_FreeSurface が関数 "bool __cdecl loadAssets(void)" (?loadAssets@@YA_NXZ) で参照されました
-Main.obj : error LNK2019: 未解決の外部シンボル SDL_LoadBMP_RW が関数 "bool __cdecl loadAssets(void)" (?loadAssets@@YA_NXZ) で参照されました
-Main.obj : error LNK2019: 未解決の外部シンボル SDL_CreateWindow が関数 "void __cdecl init(void)" (?init@@YAXXZ) で参照されました
-Main.obj : error LNK2019: 未解決の外部シンボル SDL_DestroyWindow が関数 "void __cdecl cleanUp(void)" (?cleanUp@@YAXXZ) で参照されました
-Main.obj : error LNK2019: 未解決の外部シンボル SDL_GetKeyboardState が関数 "void __cdecl update(void)" (?update@@YAXXZ) で参照されました
-Main.obj : error LNK2019: 未解決の外部シンボル SDL_PollEvent が関数 "void __cdecl handleEvents(void)" (?handleEvents@@YAXXZ) で参照されました
-Main.obj : error LNK2019: 未解決の外部シンボル SDL_CreateRenderer が関数 "void __cdecl init(void)" (?init@@YAXXZ) で参照されました
-Main.obj : error LNK2019: 未解決の外部シンボル SDL_CreateTextureFromSurface が関数 "bool __cdecl loadAssets(void)" (?loadAssets@@YA_NXZ) で参照されました
-Main.obj : error LNK2019: 未解決の外部シンボル SDL_SetRenderDrawColor が関数 "void __cdecl render(void)" (?render@@YAXXZ) で参照されました
-Main.obj : error LNK2019: 未解決の外部シンボル SDL_RenderClear が関数 "void __cdecl render(void)" (?render@@YAXXZ) で参照されました
-Main.obj : error LNK2019: 未解決の外部シンボル SDL_RenderCopy が関数 "void __cdecl render(void)" (?render@@YAXXZ) で参照されました
-Main.obj : error LNK2019: 未解決の外部シンボル SDL_RenderPresent が関数 "void __cdecl render(void)" (?render@@YAXXZ) で参照されました
-Main.obj : error LNK2019: 未解決の外部シンボル SDL_DestroyTexture が関数 "void __cdecl cleanUp(void)" (?cleanUp@@YAXXZ) で参照されました
-Main.obj : error LNK2019: 未解決の外部シンボル SDL_DestroyRenderer が関数 "void __cdecl cleanUp(void)" (?cleanUp@@YAXXZ) で参照されました
-Main.obj : error LNK2019: 未解決の外部シンボル SDL_GetTicks が関数 "void __cdecl TickGameLoop(void)" (?TickGameLoop@@YAXXZ) で参照されました
-Main.obj : error LNK2019: 未解決の外部シンボル SDL_Delay が関数 "void __cdecl TickGameLoop(void)" (?TickGameLoop@@YAXXZ) で参照されました
-Main.obj : error LNK2019: 未解決の外部シンボル SDL_Init が関数 "void __cdecl init(void)" (?init@@YAXXZ) で参照されました
-Main.obj : error LNK2019: 未解決の外部シンボル SDL_Quit が関数 "void __cdecl cleanUp(void)" (?cleanUp@@YAXXZ) で参照されました
-MSVCRTD.lib(exe_main.obj) : error LNK2019: 未解決の外部シンボル main が関数 "int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ) で参照されました
-C:\GL\SDLbin\lib\x86\SDL2.lib : warning LNK4272: ライブラリのコンピューターの種類 'x86' がターゲットのコンピューターの種類' x64' と競合しています
-C:\GL\SDLbin\lib\x86\SDL2main.lib : warning LNK4272: ライブラリのコンピューターの種類 'x86' がターゲットのコンピューターの種類' x64' と競合しています
-C:\Users\Zordo\source\repos\SamuraiSupremeGt\x64\Debug\SamuraiSupreme.exe : fatal error LNK1120: 21 件の未解決の外部参照
+  SamuraiSupreme.vcxproj -> C:\Users\Zordo\source\repos\SamuraiSupremeGt\x64\Debug\SamuraiSupreme.exe

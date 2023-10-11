@@ -48,7 +48,7 @@ const int playerSpeed = 2;  // Adjust the value as needed
 
 // Function to load assets
 bool loadAssets() {
-    SDL_Surface* playerSurface = SDL_LoadBMP("player.bmp");
+    SDL_Surface* playerSurface = SDL_LoadBMP("assets/player.bmp");
     if (!playerSurface) {
         cerr << "Failed to load player sprite. SDL Error: " << SDL_GetError() << endl;
         return false;
@@ -223,9 +223,11 @@ void TickGameLoop() {
     cleanUp();
 }
 
+
+
 // Initialize the game
 void init() {
-    lm.log(1, "init keybinds...");\
+    lm.log(1, "init keybinds...");
     InitKeybindings();
 
     lm.log(1, "SDL_INIT_EVERYTHING...");
