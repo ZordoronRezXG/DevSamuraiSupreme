@@ -6,3 +6,6 @@ Debug, x86, build solution then just press play in visual studio, maybe?
 yeah feel free to do stuff i'll check and merge it
 
 :)
+
+to do:
+	src folder
