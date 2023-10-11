@@ -237,7 +237,7 @@ bool init() {
     }
 
     lm.log(1, "SDL_CreateWindow...");
-    window = SDL_CreateWindow("Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow("Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_HIDDEN);
     if (!window) {
         cerr << "Failed to create window. SDL Error: " << SDL_GetError() << std::endl;
         isGameRunning = false;
@@ -257,6 +257,10 @@ bool init() {
         isGameRunning = false;
         return false;
     }
+
+    // Show the window
+    SDL_ShowWindow(window);
+
 
     playerRect = { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 32, 32 }; // Assuming a fixed size for the player
     lm.log(0, "Finished Loading! - Ready to play!");
