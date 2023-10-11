@@ -24,12 +24,21 @@
     <ClCompile Include="Coutzr.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="LogMaker.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CustomCoutBuffer.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Coutzr.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="version.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="LogMaker.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
   </ItemGroup>

@@ -37,4 +37,6 @@ public:
     Coutzr(int flag = 0);
 
     Coutzr& operator<<(int newFlag);
+
 };
+

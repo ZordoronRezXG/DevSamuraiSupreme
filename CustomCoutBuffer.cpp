@@ -33,17 +33,67 @@
  *
  * We believe in open-source collaboration and appreciate your support!
  */
-
+#include "version.h"
+#include <chrono>
+#include <ctime>
+#include <string>
 #include "CustomCoutBuffer.h"
 
-CustomCoutBuffer::CustomCoutBuffer(int flag) : flag(flag) {}
+CustomCoutBuffer::CustomCoutBuffer() {
+}
 
-int CustomCoutBuffer::sync() {
+bool doOnce = true;
+
+void flush() {
+    std::cout << std::flush;
+}
+
+int CustomCoutBuffer::sync(int flag) {
+    // Get the current time
+    auto now = std::chrono::system_clock::now();
+
+    // Convert to a time_t
+    std::time_t now_time = std::chrono::system_clock::to_time_t(now);
+
+    // Create a struct tm to hold the time
+    struct tm timeinfo;
+
+    // Use localtime_s to convert the time to a struct tm
+    if (localtime_s(&timeinfo, &now_time) == 0) {
+        // Convert to a string
+        char dt[26];
+        if (strftime(dt, sizeof(dt), "%Y-%m-%d %H:%M:%S: ", &timeinfo)) {
+            // Print the current date and time
+            std::cout << "ZNT " << dt;
+        }
+        else {
+            std::cout << "ZNT...: ";
+        }
+    }
+    else {
+        std::cout << "ZNT...: ";
+    }
+    
+    if (str().empty()) {
+        if (doOnce) {
+            str("");
+            std::cout << std::endl;
+            std::cout << std::string(4 * 2, ' ') << "(●'◡'●)" << " " << PROJECT_NAME << " " << PROJECT_VERSION << std::endl << std::endl << std::flush;
+            std::cout << std::string(4 * 2, ' ') << "Initialized znt log for "  << PROJECT_NAME << std::endl << std::endl << std::flush;
+
+            doOnce = false;
+        }
+        str("");
+        return 0;
+    }
+
     if (flag == 0) {
-        std::cout << "@_" << str() << std::endl;
+        std::cout << std::endl;
+        std::cout << std::string(4 * 2, ' ') << "@_" << str() << std::endl << std::endl << std::flush;
     }
     else if (flag == 1) {
-        std::cout << "@_" << str() << " loading..." << std::endl;
+        std::cout << std::endl;
+        std::cout << std::string(4 * 2, ' ') << "@_" << str() << std::endl << std::string(4 * 2, ' ') << " loading..."  << std::endl << std::endl << std::flush;
     }
     str("");
     return 0;

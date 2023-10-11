@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Zordo\source\repos\SamuraiSupremeGt\build\CMakeFiles\9a3bf50df946ccfeaf99b4efaa682a38\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{D7A716B0-7DB8-34DD-9799-CCA022268708}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -32,9 +32,8 @@
 
 class CustomCoutBuffer : public std::stringbuf {
 public:
-    int flag; // Move the flag member variable here
 
-    CustomCoutBuffer(int flag = 0);
+    CustomCoutBuffer();
 
-    virtual int sync();
+    int sync(int flag = 0);
 };

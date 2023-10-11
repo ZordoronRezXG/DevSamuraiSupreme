@@ -26,10 +26,11 @@
  */
 
 #include "Coutzr.h"
-
-Coutzr::Coutzr(int flag) : std::ostream(&buffer), buffer(flag) {}
+Coutzr::Coutzr(int flag) : std::ostream(&buffer) { rdbuf(&buffer);
+}
 
 Coutzr& Coutzr::operator<<(int newFlag) {
-    buffer.flag = newFlag;
+    
+    buffer.sync(newFlag);
     return *this;
 }

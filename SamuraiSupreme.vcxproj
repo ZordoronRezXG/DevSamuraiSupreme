@@ -135,11 +135,14 @@
   <ItemGroup>
     <ClCompile Include="Coutzr.cpp" />
     <ClCompile Include="CustomCoutBuffer.cpp" />
+    <ClCompile Include="LogMaker.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Coutzr.h" />
     <ClInclude Include="CustomCoutBuffer.h" />
+    <ClInclude Include="LogMaker.h" />
+    <ClInclude Include="version.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

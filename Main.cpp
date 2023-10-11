@@ -25,9 +25,11 @@
  * We believe in open-source collaboration and appreciate your support!
  */
 
-#include "Coutzr.h"
+
 #include <iostream>
 #include <SDL.h>
+#include "LogMaker.h"
+LogMaker lm;
 using namespace std;
 
 const int SCREEN_WIDTH = 640;
@@ -39,8 +41,6 @@ SDL_Texture* playerTexture;
 SDL_Window* window;
 
 bool isRunning = true;
-
-Coutzr ncout;
 
 // Function to load assets
 bool loadAssets() {
@@ -58,14 +58,14 @@ bool loadAssets() {
 
 // Initialize the game
 void init() {
-    ncout << 1 <<"SDL_INIT_EVERYTHING...";
+    lm.zlog(1,"SDL_INIT_EVERYTHING...");
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         cerr << "SDL initialization failed. SDL Error: " << SDL_GetError() << std::endl;
         isRunning = false;
         return;
     }
 
-    ncout << 1 << "SDL_CreateWindow..." << std::endl;
+    lm.zlog(1,"SDL_CreateWindow...");
     window = SDL_CreateWindow("Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (!window) {
         cerr << "Failed to create window. SDL Error: " << SDL_GetError() << std::endl;
@@ -73,7 +73,7 @@ void init() {
         return;
     }
 
-    ncout << 1 << "SDL_CreateRendererr..." << std::endl;
+    lm.zlog(1,"SDL_CreateRendererr...");
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (!renderer) {
         cerr << "Failed to create renderer. SDL Error: " << SDL_GetError() << std::endl;
@@ -81,15 +81,14 @@ void init() {
         return;
     }
 
-    ncout << 1 << "Loading assets..." << std::endl;
+    lm.zlog(1,"Loading assets...");
     if (!loadAssets()) {
         isRunning = false;
         return;
     }
 
     playerRect = { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 32, 32 }; // Assuming a fixed size for the player
-
-    ncout << 0 << "Finished Loading!" << std::endl;
+    lm.zlog(1, "Finished Loading!");
 }
 // Handle game events
 void handleEvents() {
@@ -106,19 +105,22 @@ void handleEvents() {
 // Update the game state
 void update() {
     const Uint8* keyState = SDL_GetKeyboardState(NULL);
+    const int playerSpeed = 2;  // Adjust the value as needed
+
     if (keyState[SDL_SCANCODE_UP]) {
-        playerRect.y -= 1;
+        playerRect.y -= playerSpeed;
     }
     if (keyState[SDL_SCANCODE_DOWN]) {
-        playerRect.y += 1;
+        playerRect.y += playerSpeed;
     }
     if (keyState[SDL_SCANCODE_LEFT]) {
-        playerRect.x -= 1;
+        playerRect.x -= playerSpeed;
     }
     if (keyState[SDL_SCANCODE_RIGHT]) {
-        playerRect.x += 1;
+        playerRect.x += playerSpeed;
     }
 }
+
 
 // Render the game frame
 void render() {
@@ -159,8 +161,9 @@ void TickGameLoop() {
     cleanUp();
 }
 
+
 int main(int argc, char* argv[]) {
-    ncout << 1 << "Initializing dependencies..." << std::endl;
+    lm.zlog(1, "Initializing dependencies...");
     init();
 
     if (isRunning) {
