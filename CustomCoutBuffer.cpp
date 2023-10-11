@@ -48,7 +48,7 @@ void flush() {
     std::cout << std::flush;
 }
 
-int CustomCoutBuffer::sync(int flag) {
+int CustomCoutBuffer::sync(int flag, bool showT) {
     // Get the current time
     auto now = std::chrono::system_clock::now();
 
@@ -64,7 +64,9 @@ int CustomCoutBuffer::sync(int flag) {
         char dt[26];
         if (strftime(dt, sizeof(dt), "%Y-%m-%d %H:%M:%S: ", &timeinfo)) {
             // Print the current date and time
-            std::cout << "ZNT " << dt;
+            if (showT) {
+                std::cout << "ZNT " << dt;
+            }
         }
         else {
             std::cout << "ZNT...: ";

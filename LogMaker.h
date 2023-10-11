@@ -35,5 +35,5 @@ public:
 
     LogMaker();
 
-    void zlog(int flag, const std::string str);
+    void log(int flag, const std::string str);
 };

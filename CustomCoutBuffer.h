@@ -35,5 +35,5 @@ public:
 
     CustomCoutBuffer();
 
-    int sync(int flag = 0);
+    int sync(int flag = 0, bool showT = true);
 };

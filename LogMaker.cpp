@@ -32,7 +32,7 @@ Coutzr ncout;
 LogMaker::LogMaker() {
 }
 
-void LogMaker::zlog(int flag, const std::string str) {
+void LogMaker::log(int flag, const std::string str) {
     ncout << flag << str;
-    ncout.buffer.sync();
+    ncout.buffer.sync(flag, false);
 }
