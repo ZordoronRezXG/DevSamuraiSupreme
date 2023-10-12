@@ -35,8 +35,8 @@ LogMaker lm;
 using namespace std;
 bool isGameRunning = true;
 
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 1040;
+const int SCREEN_HEIGHT = 880;
 
 SDL_Rect playerRect;
 SDL_Renderer* renderer;
@@ -59,15 +59,66 @@ bool loadAssets() {
     return true;
 }
 
+#include <vector>
+
+// Define a button structure
+struct Button {
+    SDL_Rect rect;
+    bool isActive = true;
+    bool isButtonHovered = false;
+
+    void (*onClick)();
+};
+
+std::vector<Button> buttons;
+// Create and set up the "Hello" button
+Button helloButton;
+
+void sayHelloOnClick() {
+    std::cout << "Hello" << std::endl;
+}
+
 
 // Handle game events
-void handleEvents() {
+void tickHandleEvents() {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
         case SDL_QUIT:
             isGameRunning = false;
             break;
+
+        case SDL_MOUSEBUTTONDOWN:
+            if (event.button.button == SDL_BUTTON_LEFT) {
+                int mouseX = event.button.x;
+                int mouseY = event.button.y;
+                SDL_Point mousePoint = { mouseX, mouseY };
+                for (Button& button : buttons) {
+                    if (SDL_PointInRect(&mousePoint, &button.rect) && button.isActive) {
+                        // Button is pressed and active
+                        if (button.onClick) {
+                            button.onClick();  // Call the button's onClick function
+                        }
+                        break;
+                    }
+                }
+            }
+            break;
+
+        case SDL_MOUSEMOTION:
+            int mouseX = event.motion.x;
+            int mouseY = event.motion.y;
+            SDL_Point mousePoint = { mouseX, mouseY };
+            for (Button& button : buttons) {
+                if (SDL_PointInRect(&mousePoint, &button.rect) && button.isActive) {
+                    // The button was clicked
+                    button.isButtonHovered = true;
+                }
+                else {
+                    button.isButtonHovered = false;
+                }
+                break;
+            }
         }
     }
 }
@@ -98,7 +149,7 @@ void useDefaultKeybindings(Keybinding& keyConfig) {
     keyConfig.space = SDL_SCANCODE_SPACE;
 }
 // Handle input using the key configuration
-void handleInput() {
+void tickHandleInput() {
     const Uint8* keyState = SDL_GetKeyboardState(NULL);
 
 
@@ -173,15 +224,30 @@ void InitKeybindings() {
     }
 }
 
-
-
 // Render the game frame
-void render() {
+void tickRender() {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, playerTexture, NULL, &playerRect);
+
+
+    for (Button& button : buttons) {
+        // Draw the button
+        if (button.isButtonHovered) {
+            SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255); // Green when hovered
+        }
+        else {
+            SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Red when not hovered
+        }
+        SDL_RenderFillRect(renderer, &helloButton.rect);
+    }
+
+
+    // Present the renderer
     SDL_RenderPresent(renderer);
 }
+
+
 
 // Clean up the game
 void cleanUp() {
@@ -192,10 +258,10 @@ void cleanUp() {
 }
 
 // Update the game state
-void update() {
+void tickUpdate() {
     const Uint8* keyState = SDL_GetKeyboardState(NULL);
     
-    handleInput();
+    tickHandleInput();
 }
 
 void TickGameLoop() {
@@ -207,10 +273,10 @@ void TickGameLoop() {
     while (isGameRunning) {
         frameStart = SDL_GetTicks();
 
-        handleInput();
-        handleEvents();
-        update();
-        render();
+        tickHandleInput();
+        tickHandleEvents();
+        tickUpdate();
+        tickRender();
 
         frameTime = SDL_GetTicks() - frameStart;
 
@@ -222,12 +288,16 @@ void TickGameLoop() {
     cleanUp();
 }
 
-
-
 // Initialize the game
 bool init() {
     lm.log(1, "init keybinds...");
     InitKeybindings();
+
+    helloButton.rect = { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 32, 32 }; // Set the button's position and size
+    helloButton.isActive = true; // Make the button active
+    helloButton.onClick = sayHelloOnClick; // Set the onClick function
+    // Custom onClick function for the "Hello" button
+    buttons.push_back(helloButton);
 
     lm.log(1, "SDL_INIT_EVERYTHING...");
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
@@ -262,7 +332,7 @@ bool init() {
     SDL_ShowWindow(window);
 
 
-    playerRect = { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 32, 32 }; // Assuming a fixed size for the player
+    playerRect = { 0 , SCREEN_HEIGHT / 2, 32, 32 }; // Assuming a fixed size for the player
     lm.log(0, "Finished Loading! - Ready to play!");
     return true;
 }
@@ -282,3 +352,4 @@ int main(int argc, char* argv[]) {
 
     return 0;
 }
+
