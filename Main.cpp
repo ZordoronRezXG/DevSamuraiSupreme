@@ -29,6 +29,12 @@
 #include <iostream>
 #include <SDL.h>
 
+#include <map>
+#include <fstream>
+#include "json.hpp"
+//to do
+#include <SDL_ttf.h>
+
 #include "LogMaker.h"
 LogMaker lm;
 
@@ -43,7 +49,7 @@ SDL_Renderer* renderer;
 SDL_Texture* playerTexture;
 SDL_Window* window;
 
-const int playerSpeed = 2;  // Adjust the value as needed
+const float playerSpeed = 200;  // Adjust the value as needed
 
 // Function to load assets
 bool loadAssets() {
@@ -79,53 +85,7 @@ void sayHelloOnClick() {
 }
 
 
-// Handle game events
-void tickHandleEvents() {
-    SDL_Event event;
-    while (SDL_PollEvent(&event)) {
-        switch (event.type) {
-        case SDL_QUIT:
-            isGameRunning = false;
-            break;
 
-        case SDL_MOUSEBUTTONDOWN:
-            if (event.button.button == SDL_BUTTON_LEFT) {
-                int mouseX = event.button.x;
-                int mouseY = event.button.y;
-                SDL_Point mousePoint = { mouseX, mouseY };
-                for (Button& button : buttons) {
-                    if (SDL_PointInRect(&mousePoint, &button.rect) && button.isActive) {
-                        // Button is pressed and active
-                        if (button.onClick) {
-                            button.onClick();  // Call the button's onClick function
-                        }
-                        break;
-                    }
-                }
-            }
-            break;
-
-        case SDL_MOUSEMOTION:
-            int mouseX = event.motion.x;
-            int mouseY = event.motion.y;
-            SDL_Point mousePoint = { mouseX, mouseY };
-            for (Button& button : buttons) {
-                if (SDL_PointInRect(&mousePoint, &button.rect) && button.isActive) {
-                    // The button was clicked
-                    button.isButtonHovered = true;
-                }
-                else {
-                    button.isButtonHovered = false;
-                }
-                break;
-            }
-        }
-    }
-}
-
-#include <map>
-#include <fstream>
-#include "json.hpp"
 
 // Define a struct to represent keybindings
 struct Keybinding {
@@ -147,27 +107,6 @@ void useDefaultKeybindings(Keybinding& keyConfig) {
     keyConfig.left = SDL_SCANCODE_A;
     keyConfig.right = SDL_SCANCODE_D;
     keyConfig.space = SDL_SCANCODE_SPACE;
-}
-// Handle input using the key configuration
-void tickHandleInput() {
-    const Uint8* keyState = SDL_GetKeyboardState(NULL);
-
-
-    if (keyState[keyConfig.space]) {
-        cout << "Space key is pressed" << endl;
-    }
-    if (keyState[keyConfig.up]) {
-        playerRect.y -= playerSpeed;
-    }
-    if (keyState[keyConfig.down]) {
-        playerRect.y += playerSpeed;
-    }
-    if (keyState[keyConfig.left]) {
-        playerRect.x -= playerSpeed;
-    }
-    if (keyState[keyConfig.right]) {
-        playerRect.x += playerSpeed;
-    }
 }
 
 // Save custom keybindings to a configuration file
@@ -224,6 +163,79 @@ void InitKeybindings() {
     }
 }
 
+// ##################################################### ALL TICKS #####################################################
+double DeltaTime;
+
+// Handle input using the key configuration
+void tickHandleInput() {
+    const Uint8* keyState = SDL_GetKeyboardState(NULL);
+
+    if (keyState[keyConfig.space]) {
+        cout << "Space key is pressed" << endl;
+    }
+
+    if (keyState[keyConfig.up]) {
+        int newY = playerRect.y - lround(playerSpeed * DeltaTime);
+        playerRect.y = newY;
+    }
+    if (keyState[keyConfig.down]) {
+        int newY = playerRect.y + lround(playerSpeed * DeltaTime);
+        playerRect.y = newY;
+    }
+    if (keyState[keyConfig.left]) {
+        int newX = playerRect.x - lround(playerSpeed * DeltaTime);
+        playerRect.x = newX;
+    }
+    if (keyState[keyConfig.right]) {
+        int newX = playerRect.x + lround(playerSpeed * DeltaTime);
+        playerRect.x = newX;
+    }
+}
+
+// Handle game events
+void tickHandleEvents() {
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+        switch (event.type) {
+        case SDL_QUIT:
+            isGameRunning = false;
+            break;
+
+        case SDL_MOUSEBUTTONDOWN:
+            if (event.button.button == SDL_BUTTON_LEFT) {
+                int mouseX = event.button.x;
+                int mouseY = event.button.y;
+                SDL_Point mousePoint = { mouseX, mouseY };
+                for (Button& button : buttons) {
+                    if (SDL_PointInRect(&mousePoint, &button.rect) && button.isActive) {
+                        // Button is pressed and active
+                        if (button.onClick) {
+                            button.onClick();  // Call the button's onClick function
+                        }
+                        break;
+                    }
+                }
+            }
+            break;
+
+        case SDL_MOUSEMOTION:
+            int mouseX = event.motion.x;
+            int mouseY = event.motion.y;
+            SDL_Point mousePoint = { mouseX, mouseY };
+            for (Button& button : buttons) {
+                if (SDL_PointInRect(&mousePoint, &button.rect) && button.isActive) {
+                    // The button was clicked
+                    button.isButtonHovered = true;
+                }
+                else {
+                    button.isButtonHovered = false;
+                }
+                break;
+            }
+        }
+    }
+}
+
 // Render the game frame
 void tickRender() {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -264,22 +276,30 @@ void tickUpdate() {
     tickHandleInput();
 }
 
+const int desiredFPS = 60;
+const int frameDelay = 1000 / desiredFPS; // Time in milliseconds per frame
+
 void TickGameLoop() {
-    const int desiredFPS = 60;
-    const int frameDelay = 1000 / desiredFPS; // Time in milliseconds per frame
+    Uint64 NOW = SDL_GetPerformanceCounter();
+    Uint64 LAST = 0;
 
-    Uint32 frameStart, frameTime;
-
+    Uint32 frameStart, frameEnd, frameTime;
     while (isGameRunning) {
         frameStart = SDL_GetTicks();
+
+        LAST = NOW;
+        NOW = SDL_GetPerformanceCounter();
 
         tickHandleInput();
         tickHandleEvents();
         tickUpdate();
         tickRender();
 
-        frameTime = SDL_GetTicks() - frameStart;
+        DeltaTime = (double)((NOW - LAST) / (double)SDL_GetPerformanceFrequency());
+        cout << DeltaTime << std::endl;
 
+        frameEnd = SDL_GetTicks();
+        frameTime = frameEnd - frameStart;
         if (frameTime < frameDelay) {
             SDL_Delay(frameDelay - frameTime);
         }

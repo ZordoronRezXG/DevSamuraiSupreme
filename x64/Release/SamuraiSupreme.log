@@ -1,8 +1,12 @@
-﻿  Main.cpp
+﻿  Coutzr.cpp
+  CustomCoutBuffer.cpp
+  LogMaker.cpp
+  Main.cpp
+C:\Users\Zordo\source\repos\SamuraiSupremeGt\Main.cpp(298,43): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
   コード生成しています。
-  1 of 1466 functions (<0.1%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    7 functions had inline decision re-evaluated but remain unchanged
+  77 of 1517 functions ( 5.1%) were compiled, the rest were copied from previous compilation.
+    55 functions were new in current compilation
+    89 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
   SamuraiSupreme.vcxproj -> C:\Users\Zordo\source\repos\SamuraiSupremeGt\x64\Release\SamuraiSupreme.exe
   C:\Users\Zordo\source\repos\SamuraiSupremeGt\assets\player.bmp
